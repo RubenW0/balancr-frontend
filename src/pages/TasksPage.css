@@ -1,0 +1,25 @@
+.tasks-page {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 16px;
+  text-align: left;
+}
+
+.tasks-subtitle {
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.tasks-error {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.tasks-loading {
+  color: var(--text);
+}

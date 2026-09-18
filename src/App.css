@@ -1,0 +1,10 @@
+.app-header {
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+}
+
+.app-title {
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text-h);
+}
