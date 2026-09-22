@@ -1,0 +1,72 @@
+.fixed-event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.fixed-event-form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.fixed-event-form-row .fixed-event-form-field {
+  flex: 1;
+}
+
+.fixed-event-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fixed-event-form-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.fixed-event-form input[type='text'],
+.fixed-event-form input[type='datetime-local'] {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.fixed-event-form input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.fixed-event-form-error {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.fixed-event-form button {
+  align-self: flex-start;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fixed-event-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

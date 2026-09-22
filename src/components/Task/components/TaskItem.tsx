@@ -1,5 +1,5 @@
-import type { Task } from '../types/task';
-import './TaskItem.css';
+import type { Task } from '../../../types/task';
+import '../styles/TaskItem.css';
 
 interface TaskItemProps {
   task: Task;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import type { CreateTaskPayload } from '../types/task';
-import './TaskForm.css';
+import type { CreateTaskPayload } from '../../../types/task';
+import '../styles/TaskForm.css';
 
 interface TaskFormProps {
   onSubmit: (payload: CreateTaskPayload) => Promise<void>;

@@ -1,0 +1,32 @@
+.fixed-event-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.fixed-event-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fixed-event-title {
+  color: var(--text-h);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.fixed-event-type {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.fixed-event-time {
+  flex-shrink: 0;
+  color: var(--text);
+  font-size: 13px;
+  text-align: right;
+}

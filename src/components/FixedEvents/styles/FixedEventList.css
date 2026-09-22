@@ -1,0 +1,11 @@
+.fixed-event-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fixed-event-list-empty {
+  color: var(--text);
+  text-align: center;
+  padding: 24px 0;
+}

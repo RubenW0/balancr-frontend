@@ -1,6 +1,6 @@
 import { useTasks } from '../hooks/useTasks';
-import { TaskForm } from '../components/TaskForm';
-import { TaskList } from '../components/TaskList';
+import { TaskForm } from '../components/Task/components/TaskForm';
+import { TaskList } from '../components/Task/components/TaskList';
 import './TasksPage.css';
 
 export function TasksPage() {

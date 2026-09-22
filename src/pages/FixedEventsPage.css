@@ -1,0 +1,25 @@
+.fixed-events-page {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 16px;
+  text-align: left;
+}
+
+.fixed-events-subtitle {
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+.fixed-events-error {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.fixed-events-loading {
+  color: var(--text);
+}
