@@ -8,8 +8,9 @@ function App() {
       <header className="app-header">
         <span className="app-title">Balancr</span>
         <nav className="app-nav">
-          <Link to="/tasks">Tasks</Link>
+          <Link to="/calendar">Calendar</Link>
           <Link to="/fixed-events">Fixed Events</Link>
+          <Link to="/activity-goals">Activity Goals</Link>
         </nav>
       </header>
       <main>

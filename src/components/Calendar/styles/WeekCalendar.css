@@ -1,0 +1,42 @@
+.week-calendar {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--bg);
+  --fc-neutral-bg-color: var(--border);
+  --fc-today-bg-color: var(--accent-bg);
+  --fc-now-indicator-color: var(--accent);
+  --fc-button-bg-color: var(--accent);
+  --fc-button-border-color: var(--accent);
+  --fc-button-hover-bg-color: var(--accent);
+  --fc-button-hover-border-color: var(--accent);
+  --fc-button-active-bg-color: var(--text-h);
+  --fc-button-active-border-color: var(--text-h);
+
+  color: var(--text-h);
+}
+
+.week-calendar .fc-toolbar-title {
+  font-size: 18px;
+}
+
+.week-calendar .fc-event {
+  cursor: pointer;
+}
+
+/* Planned sessions are a read-only preview: dashed outline, no pointer. */
+.week-calendar .week-calendar-item-planned {
+  cursor: default;
+  border-style: dashed;
+  border-width: 2px;
+  border-color: var(--bg) !important;
+}
+
+.week-calendar .fc-timegrid-slot,
+.week-calendar .fc-highlight {
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  .week-calendar {
+    --fc-non-business-color: rgba(0, 0, 0, 0.35);
+  }
+}

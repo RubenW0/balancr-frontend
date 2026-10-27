@@ -6,13 +6,30 @@ React + TypeScript + Vite frontend voor de `balancr-api` Spring Boot backend.
 
 ```
 src/
-  components/   Herbruikbare UI-componenten (TaskForm, TaskItem, TaskList)
-  pages/        Schermen per route (TasksPage)
+  components/   UI-componenten per feature (Calendar/, FixedEvents/, ActivityGoals/)
+  pages/        Schermen per route (CalendarPage, FixedEventsPage, ActivityGoalsPage)
   routes/       react-router route-definities
-  services/     API-laag: axios instance (apiClient) + functies per resource (taskService)
-  hooks/        Custom hooks die de service-laag aan React state koppelen (useTasks)
-  types/        TypeScript types die overeenkomen met de backend DTO's (Task)
+  services/     API-laag: axios instance (apiClient) + functies per resource (fixedEventService, activityGoalService)
+  hooks/        Custom hooks die de service-laag aan React state koppelen (useFixedEvents, useActivityGoals)
+  types/        TypeScript types die overeenkomen met de backend DTO's (FixedEvent, ActivityGoal, AvailabilityWindow)
+                en CalendarItem, het algemene type dat de agenda toont
+  mappers/      Omzetten van API-data naar agenda-data (FixedEvent -> CalendarItem, availability -> businessHours)
+  utils/        Hulpfuncties, o.a. datum-tijd zonder tijdzone voor de LocalDateTime-backend
 ```
+
+## Weekagenda (`/calendar`)
+
+Gebouwd met FullCalendar (`timeGridWeek`, Nederlands, week begint op maandag, 06:00 tot 24:00).
+
+- `WeekCalendar` toont alleen `CalendarItem`s (`kind` `"FIXED"` of `"PLANNED"`) en kent `FixedEvent` niet.
+  Een nieuwe bron (bijv. ingeplande sessies) voeg je toe met een mapper naar `CalendarItem` in `src/mappers/`.
+- Kleuren staan in `src/components/Calendar/calendarColors.ts`: per type voor FIXED (class/work/exam/other),
+  met een standaardkleur voor onbekende types, en een eigen kleur voor PLANNED.
+- Bij elke weekwissel haalt de pagina `GET /api/fixed-events?from=..&to=..` op voor de zichtbare week.
+- `GET /api/availability` wordt `businessHours`; tijd buiten de beschikbaarheid is grijs.
+- Klik of sleep over een leeg tijdvak om een afspraak toe te voegen; klik op een afspraak om hem te
+  bewerken of te verwijderen (`PUT`/`DELETE /api/fixed-events/{id}`).
+- Datum-tijden worden altijd zonder tijdzone verstuurd (`2026-10-19T09:00:00`, geen `Z`).
 
 ## Vereisten
 
@@ -50,9 +67,9 @@ De frontend draait op `http://localhost:5173` en praat met de API via de URL in 
 ## API-laag
 
 - `src/services/apiClient.ts` — axios instance met `baseURL` uit `VITE_API_BASE_URL` en een response-interceptor
-  die fouten omzet naar een `ApiError` met leesbare boodschap.
-- `src/services/taskService.ts` — één functie per endpoint (`getTasks`, `getTask`, `createTask`, `updateTask`, `deleteTask`).
-- `src/hooks/useTasks.ts` — koppelt de service-laag aan React state (loading/error/data) voor gebruik in pagina's.
+  die fouten omzet naar een `ApiError` met leesbare boodschap (het `detail`-veld van `application/problem+json`).
+- `src/services/fixedEventService.ts` / `activityGoalService.ts` — één functie per endpoint (bijv. `getFixedEvents`, `createFixedEvent`).
+- `src/hooks/useFixedEvents.ts` / `useActivityGoals.ts` — koppelen de service-laag aan React state (loading/error/data) voor gebruik in pagina's.
 
 Een nieuw endpoint toevoegen (bijv. voor een nieuwe resource `Category`):
 

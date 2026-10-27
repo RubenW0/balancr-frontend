@@ -1,0 +1,116 @@
+.fixed-event-dialog {
+  width: min(480px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.fixed-event-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.fixed-event-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  text-align: left;
+}
+
+.fixed-event-dialog-form h2 {
+  font-size: 20px;
+  margin: 0;
+  color: var(--text-h);
+}
+
+.fixed-event-dialog-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fixed-event-dialog-row .fixed-event-dialog-field {
+  flex: 1 1 180px;
+}
+
+.fixed-event-dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fixed-event-dialog-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.fixed-event-dialog input[type='text'],
+.fixed-event-dialog input[type='datetime-local'],
+.fixed-event-dialog select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 15px;
+  background: var(--bg);
+  color: var(--text-h);
+}
+
+.fixed-event-dialog input:focus,
+.fixed-event-dialog select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.fixed-event-dialog-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-h);
+}
+
+.fixed-event-dialog-error {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  color: var(--text-h);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.fixed-event-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.fixed-event-dialog-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fixed-event-dialog-actions .fixed-event-dialog-cancel {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-h);
+}
+
+.fixed-event-dialog-actions .fixed-event-dialog-delete {
+  margin-right: auto;
+  background: #dc2626;
+}
+
+.fixed-event-dialog-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -21,9 +21,14 @@ export class ApiError extends Error {
 
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<{ message?: string }>) => {
+  (error: AxiosError<{ detail?: string; message?: string }>) => {
     const status = error.response?.status;
+    const detail = error.response?.data?.detail;
+    // Errors from the API are application/problem+json, with the reason in `detail`.
+    // Spring's own 400 for invalid request values has no detail, so give a general hint then.
     const message =
+      detail ??
+      (status === 400 ? 'Please check the form values.' : undefined) ??
       error.response?.data?.message ??
       error.message ??
       'Something went wrong while processing the request. Please try again later.';

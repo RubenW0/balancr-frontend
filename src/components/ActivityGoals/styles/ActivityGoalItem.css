@@ -1,0 +1,50 @@
+.activity-goal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.activity-goal-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.activity-goal-name {
+  color: var(--text-h);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.activity-goal-detail {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.activity-goal-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.activity-goal-actions button {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-h);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.activity-goal-actions button:hover {
+  border-color: var(--accent);
+}
+
+.activity-goal-actions .activity-goal-delete:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+}

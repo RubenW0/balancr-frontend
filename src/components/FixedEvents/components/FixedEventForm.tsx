@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import type { CreateFixedEventPayload } from '../../../types/fixedEvent';
+import { fromDateTimeInputValue } from '../../../utils/dateTime';
 import '../styles/FixedEventForm.css';
 
 interface FixedEventFormProps {
   onSubmit: (payload: CreateFixedEventPayload) => Promise<void>;
-}
-
-function toLocalDateTimeString(value: string): string {
-  return value.length === 16 ? `${value}:00` : value;
 }
 
 export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
@@ -36,8 +33,8 @@ export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
       await onSubmit({
         title: trimmedTitle,
         type: trimmedType,
-        startTime: toLocalDateTimeString(startTime),
-        endTime: toLocalDateTimeString(endTime),
+        startTime: fromDateTimeInputValue(startTime),
+        endTime: fromDateTimeInputValue(endTime),
       });
       setTitle('');
       setType('');

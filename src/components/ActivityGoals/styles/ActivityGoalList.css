@@ -1,10 +1,10 @@
-.task-list {
+.activity-goal-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.task-list-empty {
+.activity-goal-list-empty {
   color: var(--text);
   text-align: center;
   padding: 24px 0;
