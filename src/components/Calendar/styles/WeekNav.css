@@ -1,0 +1,31 @@
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.week-nav-buttons {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.week-nav .button {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+/* Square arrow-only buttons. */
+.week-nav .week-nav-arrow {
+  width: 32px;
+  padding: 0;
+}
+
+.week-nav-title {
+  margin-left: var(--space-1);
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

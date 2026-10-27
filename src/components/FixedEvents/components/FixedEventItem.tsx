@@ -14,7 +14,7 @@ function formatDateTime(value: string): string {
 
 export function FixedEventItem({ event }: FixedEventItemProps) {
   return (
-    <li className="fixed-event-item">
+    <li className="card fixed-event-item">
       <div className="fixed-event-info">
         <span className="fixed-event-title">{event.title}</span>
         <span className="fixed-event-type">{event.type}</span>

@@ -1,4 +1,5 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import type { Ref } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -7,19 +8,31 @@ import type {
   BusinessHoursInput,
   DateSelectArg,
   DatesSetArg,
+  DayHeaderContentArg,
   EventClickArg,
   EventInput,
   FormatterInput,
 } from '@fullcalendar/core';
 import type { CalendarItem } from '../../../types/calendarItem';
-import { getCalendarItemColor } from '../calendarColors';
+import { getCalendarItemColorKey } from '../calendarColors';
 import '../styles/WeekCalendar.css';
 
+/** Week navigation, so the page can render its own toolbar. */
+export interface WeekCalendarHandle {
+  prev: () => void;
+  next: () => void;
+  today: () => void;
+}
+
 interface WeekCalendarProps {
+  ref?: Ref<WeekCalendarHandle>;
   items: CalendarItem[];
   businessHours?: BusinessHoursInput;
-  /** Called with the visible range (start inclusive, end exclusive) on load and on every navigation. */
-  onRangeChange: (start: Date, end: Date) => void;
+  /**
+   * Called with the visible range (start inclusive, end exclusive) and its title
+   * on load and on every navigation.
+   */
+  onRangeChange: (start: Date, end: Date, title: string) => void;
   /** Click or drag over an empty time slot. */
   onSelectSlot: (start: Date, end: Date) => void;
   onItemClick: (item: CalendarItem) => void;
@@ -27,34 +40,56 @@ interface WeekCalendarProps {
 
 const TIME_FORMAT: FormatterInput = { hour: '2-digit', minute: '2-digit', hour12: false };
 
+/** Day header: weekday in small capitals with the date number below it (circled for today). */
+function renderDayHeader(arg: DayHeaderContentArg) {
+  return (
+    <span className="week-calendar-day">
+      <span className="week-calendar-weekday">{arg.view.calendar.formatDate(arg.date, { weekday: 'short' })}</span>
+      <span className="week-calendar-date">{arg.date.getDate()}</span>
+    </span>
+  );
+}
+
 export function WeekCalendar({
+  ref,
   items,
   businessHours,
   onRangeChange,
   onSelectSlot,
   onItemClick,
 }: WeekCalendarProps) {
+  const calendarRef = useRef<FullCalendar>(null);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      prev: () => calendarRef.current?.getApi().prev(),
+      next: () => calendarRef.current?.getApi().next(),
+      today: () => calendarRef.current?.getApi().today(),
+    }),
+    [],
+  );
+
   const events = useMemo<EventInput[]>(
     () =>
-      items.map((item) => {
-        const color = getCalendarItemColor(item);
-        return {
-          // Ids are only unique per kind, so prefix them.
-          id: `${item.kind}-${item.id}`,
-          title: item.title,
-          start: item.start,
-          end: item.end,
-          backgroundColor: color,
-          borderColor: color,
-          classNames: [`week-calendar-item-${item.kind.toLowerCase()}`],
-          extendedProps: { item },
-        };
-      }),
+      items.map((item) => ({
+        // Ids are only unique per kind, so prefix them.
+        id: `${item.kind}-${item.id}`,
+        title: item.title,
+        start: item.start,
+        end: item.end,
+        // Colours come from CSS (tokens), selected by these classes.
+        classNames: [
+          `week-calendar-item-${item.kind.toLowerCase()}`,
+          `week-calendar-color-${getCalendarItemColorKey(item)}`,
+        ],
+        extendedProps: { item },
+      })),
     [items],
   );
 
   const handleDatesSet = useCallback(
-    (arg: DatesSetArg) => onRangeChange(arg.start, arg.end),
+    (arg: DatesSetArg) => onRangeChange(arg.start, arg.end, arg.view.title),
     [onRangeChange],
   );
 
@@ -74,18 +109,24 @@ export function WeekCalendar({
   return (
     <div className="week-calendar">
       <FullCalendar
+        ref={calendarRef}
         plugins={[timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
         locale={nlLocale}
         firstDay={1}
-        headerToolbar={{ left: 'prev,next today', center: 'title', right: '' }}
+        headerToolbar={false}
         allDaySlot={false}
         slotMinTime="06:00:00"
         slotMaxTime="24:00:00"
-        scrollTime="08:00:00"
+        scrollTime="07:00:00"
         slotLabelFormat={TIME_FORMAT}
         eventTimeFormat={TIME_FORMAT}
-        height={720}
+        // Blocks lower than this show time and title on one line, so short sessions stay readable in compact rows.
+        eventShortHeight={40}
+        dayHeaderContent={renderDayHeader}
+        // Fills its container and stretches the slots to fit; the time grid only scrolls when they cannot shrink further.
+        height="100%"
+        expandRows
         nowIndicator
         businessHours={businessHours}
         events={events}

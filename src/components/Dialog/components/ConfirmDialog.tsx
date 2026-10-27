@@ -32,18 +32,18 @@ export function ConfirmDialog({ title, message, confirmLabel, onConfirm, onClose
       <p className="app-dialog-message">{message}</p>
 
       {error && (
-        <p className="app-dialog-error" role="alert">
+        <p className="alert alert--danger" role="alert">
           {error}
         </p>
       )}
 
       <div className="app-dialog-actions">
-        <button type="button" className="app-dialog-secondary" onClick={onClose} disabled={isBusy}>
+        <button type="button" className="button button--secondary" onClick={onClose} disabled={isBusy}>
           Cancel
         </button>
         <button
           type="button"
-          className="app-dialog-danger"
+          className="button button--danger"
           onClick={handleConfirm}
           disabled={isBusy}
           autoFocus

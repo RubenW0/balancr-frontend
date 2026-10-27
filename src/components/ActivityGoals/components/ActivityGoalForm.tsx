@@ -128,10 +128,10 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
 
   return (
     <form
-      className={`activity-goal-form${isEdit ? ' activity-goal-form-embedded' : ''}`}
+      className={`activity-goal-form${isEdit ? ' activity-goal-form-embedded' : ' card'}`}
       onSubmit={handleSubmit}
     >
-      <div className="activity-goal-form-field">
+      <div className="field">
         <label htmlFor={`${id}-name`}>Name</label>
         <input
           id={`${id}-name`}
@@ -145,7 +145,7 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
         />
       </div>
 
-      <div className="activity-goal-form-field">
+      <div className="field">
         <label htmlFor={`${id}-type`}>Type</label>
         <select
           id={`${id}-type`}
@@ -158,8 +158,8 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
         </select>
       </div>
 
-      <div className="activity-goal-form-row">
-        <div className="activity-goal-form-field">
+      <div className="field-row">
+        <div className="field">
           <label htmlFor={`${id}-frequency`}>Frequency per week</label>
           <input
             id={`${id}-frequency`}
@@ -172,7 +172,7 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
           />
         </div>
 
-        <div className="activity-goal-form-field">
+        <div className="field">
           <label htmlFor={`${id}-duration`}>Duration (minutes)</label>
           <input
             id={`${id}-duration`}
@@ -186,7 +186,7 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
       </div>
 
       {type === 'TRAINING' && (
-        <div className="activity-goal-form-field">
+        <div className="field">
           <label htmlFor={`${id}-intensity`}>Intensity</label>
           <select
             id={`${id}-intensity`}
@@ -202,7 +202,7 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
         </div>
       )}
 
-      <div className="activity-goal-form-field">
+      <div className="field">
         <label htmlFor={`${id}-rest`}>Rest days between (optional)</label>
         <input
           id={`${id}-rest`}
@@ -213,13 +213,13 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
           aria-describedby={`${id}-rest-help`}
           disabled={isSubmitting}
         />
-        <p id={`${id}-rest-help`} className="activity-goal-form-help">
+        <p id={`${id}-rest-help`} className="field-help">
           Leave empty to use the default for the intensity (light 0, medium 1, heavy 2 days).
         </p>
       </div>
 
-      <div className="activity-goal-form-row">
-        <div className="activity-goal-form-field">
+      <div className="field-row">
+        <div className="field">
           <label htmlFor={`${id}-priority`}>Priority</label>
           <select
             id={`${id}-priority`}
@@ -235,7 +235,7 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
           </select>
         </div>
 
-        <div className="activity-goal-form-field">
+        <div className="field">
           <label htmlFor={`${id}-preferred-time`}>Preferred time</label>
           <select
             id={`${id}-preferred-time`}
@@ -253,24 +253,24 @@ export function ActivityGoalForm({ goal, onSubmit, onCancel }: ActivityGoalFormP
       </div>
 
       {validationError && (
-        <p className="activity-goal-form-error" role="alert">
+        <p className="alert alert--danger" role="alert">
           {validationError}
         </p>
       )}
-      {successMessage && <p className="activity-goal-form-success">{successMessage}</p>}
+      {successMessage && <p className="alert alert--success">{successMessage}</p>}
 
       <div className="activity-goal-form-actions">
         {onCancel && (
           <button
             type="button"
-            className="activity-goal-form-cancel"
+            className="button button--secondary"
             onClick={onCancel}
             disabled={isSubmitting}
           >
             Cancel
           </button>
         )}
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" className="button button--primary" disabled={isSubmitting}>
           {submitLabel}
         </button>
       </div>

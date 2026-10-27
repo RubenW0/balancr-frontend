@@ -48,8 +48,8 @@ export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
   };
 
   return (
-    <form className="fixed-event-form" onSubmit={handleSubmit}>
-      <div className="fixed-event-form-field">
+    <form className="card fixed-event-form" onSubmit={handleSubmit}>
+      <div className="field">
         <label htmlFor="fixed-event-title">Title</label>
         <input
           id="fixed-event-title"
@@ -61,7 +61,7 @@ export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
         />
       </div>
 
-      <div className="fixed-event-form-field">
+      <div className="field">
         <label htmlFor="fixed-event-type">Type</label>
         <input
           id="fixed-event-type"
@@ -73,8 +73,8 @@ export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
         />
       </div>
 
-      <div className="fixed-event-form-row">
-        <div className="fixed-event-form-field">
+      <div className="field-row">
+        <div className="field">
           <label htmlFor="fixed-event-start">Start time</label>
           <input
             id="fixed-event-start"
@@ -85,7 +85,7 @@ export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
           />
         </div>
 
-        <div className="fixed-event-form-field">
+        <div className="field">
           <label htmlFor="fixed-event-end">End time</label>
           <input
             id="fixed-event-end"
@@ -97,9 +97,9 @@ export function FixedEventForm({ onSubmit }: FixedEventFormProps) {
         </div>
       </div>
 
-      {validationError && <p className="fixed-event-form-error">{validationError}</p>}
+      {validationError && <p className="alert alert--danger">{validationError}</p>}
 
-      <button type="submit" disabled={isSubmitting}>
+      <button type="submit" className="button button--primary" disabled={isSubmitting}>
         {isSubmitting ? 'Adding...' : 'Add fixed event'}
       </button>
     </form>

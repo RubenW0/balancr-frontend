@@ -1,111 +1,23 @@
 .activity-goal-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 24px;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
 }
 
+/* Inside the edit dialog the dialog itself is the panel. */
 .activity-goal-form-embedded {
   margin-bottom: 0;
   padding: 0;
-  border: none;
-}
-
-.activity-goal-form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.activity-goal-form-row .activity-goal-form-field {
-  flex: 1 1 160px;
-}
-
-.activity-goal-form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.activity-goal-form-field label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-.activity-goal-form input[type='text'],
-.activity-goal-form input[type='number'],
-.activity-goal-form select {
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-size: 15px;
-  background: var(--bg);
-  color: var(--text-h);
-}
-
-.activity-goal-form input:focus,
-.activity-goal-form select:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-.activity-goal-form-error {
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-border);
-  color: var(--text-h);
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  margin: 0;
-}
-
-.activity-goal-form-success {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text-h);
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  margin: 0;
-}
-
-.activity-goal-form button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  background: var(--accent);
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.activity-goal-form button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.activity-goal-form-help {
-  margin: 0;
-  color: var(--text);
-  font-size: 13px;
 }
 
 .activity-goal-form-actions {
   display: flex;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .activity-goal-form-embedded .activity-goal-form-actions {
   justify-content: flex-end;
-}
-
-.activity-goal-form .activity-goal-form-cancel {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-h);
 }

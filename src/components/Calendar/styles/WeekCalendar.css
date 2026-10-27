@@ -1,33 +1,63 @@
+/* FullCalendar restyled with the design tokens. */
+
 .week-calendar {
-  --fc-border-color: var(--border);
-  --fc-page-bg-color: var(--bg);
-  --fc-neutral-bg-color: var(--border);
-  --fc-today-bg-color: var(--accent-bg);
-  --fc-now-indicator-color: var(--accent);
-  --fc-button-bg-color: var(--accent);
-  --fc-button-border-color: var(--accent);
-  --fc-button-hover-bg-color: var(--accent);
-  --fc-button-hover-border-color: var(--accent);
-  --fc-button-active-bg-color: var(--text-h);
-  --fc-button-active-border-color: var(--text-h);
+  /* Every FullCalendar colour variable is set here, so none of its defaults (e.g. #3788d8) show. */
+  --fc-border-color: var(--color-grid);
+  --fc-page-bg-color: var(--color-surface);
+  --fc-neutral-bg-color: var(--color-surface);
+  --fc-neutral-text-color: var(--color-text-muted);
+  --fc-today-bg-color: var(--color-accent-tint);
+  --fc-now-indicator-color: var(--color-accent);
+  --fc-non-business-color: var(--color-non-business);
+  --fc-highlight-color: var(--color-accent-selection);
+  --fc-event-bg-color: var(--color-raised);
+  --fc-event-border-color: var(--color-border-strong);
+  --fc-event-text-color: var(--color-text);
+  --fc-small-font-size: var(--font-size-xs);
 
-  color: var(--text-h);
+  /* FullCalendar uses height: 100%, so this card takes its size from the page layout. */
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
 }
 
-.week-calendar .fc-toolbar-title {
-  font-size: 18px;
+/* Grid: the card draws the outer border, so FullCalendar's own outer edges are removed. */
+
+.week-calendar .fc-theme-standard .fc-scrollgrid {
+  border: 0;
 }
 
-.week-calendar .fc-event {
-  cursor: pointer;
+.week-calendar .fc-theme-standard td:last-child,
+.week-calendar .fc-theme-standard th:last-child {
+  border-right: 0;
 }
 
-/* Planned sessions are a read-only preview: dashed outline, no pointer. */
-.week-calendar .week-calendar-item-planned {
-  cursor: default;
-  border-style: dashed;
-  border-width: 2px;
-  border-color: var(--bg) !important;
+.week-calendar .fc-scrollgrid-section-liquid > td {
+  border-bottom: 0;
+}
+
+.week-calendar .fc .fc-timegrid-slot {
+  /*
+   * Compact rows; expandRows stretches them when there is room. The small font and
+   * line-height keep the inline time label from forcing taller rows.
+   */
+  height: 13px;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.week-calendar .fc .fc-timegrid-slot-minor {
+  border-top-style: none;
+}
+
+.week-calendar .fc .fc-timegrid-slot-label-cushion {
+  padding: 0 var(--space-2);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .week-calendar .fc-timegrid-slot,
@@ -35,8 +65,194 @@
   cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-  .week-calendar {
-    --fc-non-business-color: rgba(0, 0, 0, 0.35);
+/* Thin scrollbar in token colours, for when the grid does not fit. */
+.week-calendar .fc-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.week-calendar .fc-scroller::-webkit-scrollbar {
+  width: 8px;
+}
+
+.week-calendar .fc-scroller::-webkit-scrollbar-thumb {
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+}
+
+.week-calendar .fc-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Day headers: weekday in small capitals, date number below; today gets an accent circle. */
+
+.week-calendar .fc .fc-col-header-cell-cushion {
+  display: block;
+  padding: 6px var(--space-1);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.week-calendar .fc .fc-col-header-cell.fc-day-today {
+  background: var(--color-accent-tint);
+}
+
+.week-calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.week-calendar-weekday {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.week-calendar-date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-pill);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.week-calendar .fc-day-today .week-calendar-date {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* Events: shared shape */
+
+.week-calendar .fc-v-event {
+  border-radius: var(--radius-event);
+  box-shadow: none;
+}
+
+.week-calendar .fc-v-event .fc-event-main {
+  padding: 2px var(--space-1) 2px 6px;
+  color: var(--color-text);
+}
+
+.week-calendar .fc-event-title {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.week-calendar .fc-event-time {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Short blocks (one line): tight padding so the text fits in compact rows. */
+.week-calendar .fc-timegrid-event-short .fc-event-main {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.week-calendar .fc-timegrid-event-short .fc-event-time,
+.week-calendar .fc-timegrid-event-short .fc-event-title {
+  font-size: 11px;
+  line-height: 13px;
+}
+
+/* Colour per item: --item-color is picked by the class from calendarColors.ts. */
+
+.week-calendar-color-class {
+  --item-color: var(--color-event-class);
+}
+
+.week-calendar-color-exam {
+  --item-color: var(--color-event-exam);
+}
+
+.week-calendar-color-sport {
+  --item-color: var(--color-event-sport);
+}
+
+.week-calendar-color-work {
+  --item-color: var(--color-event-work);
+}
+
+.week-calendar-color-other {
+  --item-color: var(--color-event-other);
+}
+
+.week-calendar-color-training {
+  --item-color: var(--color-training);
+}
+
+.week-calendar-color-study {
+  --item-color: var(--color-study);
+}
+
+/* Fixed events: calm raised block with a coloured bar on the left. */
+
+.week-calendar .fc-v-event.week-calendar-item-fixed {
+  cursor: pointer;
+  background-color: var(--color-raised);
+  border: 1px solid var(--color-border-strong);
+  border-left: 3px solid var(--item-color);
+  transition: border-color var(--transition-fast);
+}
+
+.week-calendar .week-calendar-item-fixed .fc-event-time {
+  color: var(--color-text-muted);
+}
+
+.week-calendar .fc-v-event.week-calendar-item-fixed:hover {
+  border-color: var(--color-text-muted);
+  border-left-color: var(--item-color);
+}
+
+/* Planned sessions: read-only preview, translucent fill in the activity colour. */
+
+.week-calendar .fc-v-event.week-calendar-item-planned {
+  cursor: default;
+  background-color: color-mix(in srgb, var(--item-color) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--item-color) 40%, transparent);
+  border-left: 3px solid var(--item-color);
+}
+
+/* Muted text is just below 4.5:1 on the tinted fill, so the time uses the normal text colour. */
+.week-calendar .week-calendar-item-planned .fc-event-time {
+  color: var(--color-text);
+  font-weight: 400;
+}
+
+/* Selection preview while clicking or dragging over empty slots. */
+
+.week-calendar .fc-v-event.fc-event-mirror {
+  background-color: var(--color-accent-selection);
+  border: 1px dashed var(--color-accent);
+}
+
+/* Narrow screens: give the seven day columns as much width as possible. */
+@media (max-width: 600px) {
+  .week-calendar .fc .fc-col-header-cell-cushion {
+    padding: var(--space-1) 0;
+  }
+
+  .week-calendar-weekday {
+    font-size: 10px;
+    letter-spacing: 0.03em;
+  }
+
+  .week-calendar-date {
+    min-width: 24px;
+    height: 24px;
+    font-size: 14px;
   }
 }

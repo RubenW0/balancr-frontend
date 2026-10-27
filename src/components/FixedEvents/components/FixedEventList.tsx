@@ -8,7 +8,7 @@ interface FixedEventListProps {
 
 export function FixedEventList({ fixedEvents }: FixedEventListProps) {
   if (fixedEvents.length === 0) {
-    return <p className="fixed-event-list-empty">No fixed events yet. Add one above.</p>;
+    return <p className="card fixed-event-list-empty">No fixed events yet. Add one above.</p>;
   }
 
   return (

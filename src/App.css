@@ -1,28 +1,69 @@
 .app-header {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  border-bottom: 1px solid var(--border);
-  padding: 16px 24px;
+  flex-shrink: 0;
+  align-items: stretch;
+  gap: var(--space-6);
+  height: var(--nav-height);
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
 }
 
 .app-title {
-  font-weight: 600;
-  font-size: 18px;
-  color: var(--text-h);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
 }
 
+/* Links span the full bar height, so the active underline sits on the bottom border. */
 .app-nav {
   display: flex;
-  gap: 16px;
+  gap: var(--space-5);
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .app-nav a {
-  color: var(--text);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-muted);
   text-decoration: none;
   font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .app-nav a:hover {
-  color: var(--accent);
+  color: var(--color-text);
+}
+
+.app-nav a.active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+
+.app-nav a:focus-visible {
+  outline-offset: -2px;
+}
+
+@media (max-width: 600px) {
+  .app-header {
+    gap: var(--space-4);
+    padding: 0 var(--space-4);
+  }
+
+  .app-nav {
+    gap: var(--space-4);
+  }
 }

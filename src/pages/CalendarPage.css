@@ -1,28 +1,120 @@
 .calendar-page {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 16px 48px;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4) var(--space-4);
 }
 
-.calendar-subtitle {
-  color: var(--text);
-  margin-bottom: 16px;
+/* Top bar: week navigation on the left, legend and planning on the right. */
+.calendar-toolbar {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  min-height: 56px;
+  padding: var(--space-1) 0;
 }
 
-.calendar-error {
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-border);
-  color: var(--text-h);
-  padding: 10px 12px;
-  border-radius: 6px;
-  margin: 0 0 12px;
+.calendar-toolbar-start,
+.calendar-toolbar-end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-width: 0;
+}
+
+.calendar-toolbar-end {
+  gap: var(--space-2) var(--space-5);
+  justify-content: flex-end;
+}
+
+.calendar-info {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  cursor: help;
+}
+
+.calendar-info:hover {
+  color: var(--color-text);
 }
 
 .calendar-status {
-  min-height: 24px;
-  margin-bottom: 8px;
-  color: var(--text);
-  font-size: 14px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.calendar-status:empty {
+  display: none;
+}
+
+.calendar-errors {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.calendar-errors .alert {
+  padding: var(--space-2) var(--space-3);
+}
+
+.calendar-main {
+  position: relative;
+  min-width: 0;
+  height: 70vh;
+}
+
+/* Shown over an empty week, until there are events or a plan. */
+.calendar-empty-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  width: min(420px, calc(100% - 32px));
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-raised);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/*
+ * Desktop: the page fills the window under the navigation and does not scroll.
+ * The calendar card takes all remaining height; only its time grid may scroll.
+ */
+@media (min-width: 900px) {
+  #root:has(.calendar-page) {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  main:has(.calendar-page) {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calendar-page {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 var(--space-5) var(--space-4);
+  }
+
+  .calendar-main {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+  }
 }

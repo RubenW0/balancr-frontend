@@ -14,9 +14,9 @@ export function ActivityGoalsPage() {
   const [deletingGoal, setDeletingGoal] = useState<ActivityGoalResponseDTO | null>(null);
 
   return (
-    <section className="activity-goals-page">
+    <section className="page activity-goals-page">
       <h1>Activity Goals</h1>
-      <p className="activity-goals-subtitle">
+      <p className="page-subtitle">
         {activityGoals.length === 0
           ? 'Overview of your activity goals'
           : `${activityGoals.length} activity goal(s)`}
@@ -25,13 +25,13 @@ export function ActivityGoalsPage() {
       <ActivityGoalForm onSubmit={addActivityGoal} />
 
       {error && (
-        <p className="activity-goals-error" role="alert">
+        <p className="alert alert--danger activity-goals-error" role="alert">
           {error}
         </p>
       )}
 
       {isLoading ? (
-        <p className="activity-goals-loading">Loading activity goals...</p>
+        <p className="muted">Loading activity goals...</p>
       ) : (
         <ActivityGoalList activityGoals={activityGoals} onEdit={setEditingGoal} onDelete={setDeletingGoal} />
       )}

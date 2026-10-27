@@ -10,7 +10,7 @@ interface ActivityGoalListProps {
 
 export function ActivityGoalList({ activityGoals, onEdit, onDelete }: ActivityGoalListProps) {
   if (activityGoals.length === 0) {
-    return <p className="activity-goal-list-empty">No activity goals yet. Add one above.</p>;
+    return <p className="card activity-goal-list-empty">No activity goals yet. Add one above.</p>;
   }
 
   return (

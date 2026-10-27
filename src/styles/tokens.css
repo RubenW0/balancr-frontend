@@ -1,0 +1,85 @@
+/*
+ * Design tokens. Components use only these variables, so a light theme can
+ * later be added by overriding them (e.g. under :root[data-theme='light']).
+ * Palette: near-neutral graphite with a faint blue undertone; blue is for the accent only.
+ */
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: page < card < raised (events, forms, dialogs, hover) */
+  --color-bg: #0f1012;
+  --color-surface: #15171b;
+  --color-raised: #1b1e24;
+  --color-border: #262a32;
+  --color-border-strong: #353a45;
+
+  /* Text */
+  --color-text: #ecedef;
+  --color-text-muted: #8b909b;
+
+  /* Accent: buttons, active navigation, focus, today and the now line only */
+  --color-accent: #4c9aff;
+  --color-accent-hover: #6badff;
+  --color-accent-pressed: #3b87ec;
+  --color-on-accent: #0b1220;
+  --color-accent-subtle: rgba(76, 154, 255, 0.06);
+  --color-accent-tint: rgba(76, 154, 255, 0.04);
+  --color-accent-selection: rgba(76, 154, 255, 0.16);
+
+  /* Status */
+  --color-danger: #f87171;
+  --color-danger-subtle: rgba(248, 113, 113, 0.08);
+  --color-warning: #fbbf24;
+  --color-warning-subtle: rgba(251, 191, 36, 0.07);
+  --color-success: #34d399;
+  --color-success-subtle: rgba(52, 211, 153, 0.08);
+  --color-on-status: #0b1220;
+
+  /* Activity types (planned sessions) */
+  --color-training: #2dd4bf;
+  --color-study: #ffb84d;
+
+  /* Fixed event types (calendar) */
+  --color-event-class: #7aa2f7;
+  --color-event-exam: #f87171;
+  --color-event-sport: #2dd4bf;
+  --color-event-work: #a8a29e;
+  --color-event-other: #64748b;
+
+  /* Calendar */
+  --color-grid: #20242b;
+  --color-non-business: rgba(0, 0, 0, 0.25);
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Shape */
+  --radius-sm: 8px;
+  --radius-event: 7px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* Layout */
+  --nav-height: 52px;
+
+  /* Elevation: dialogs only */
+  --shadow-dialog: 0 12px 32px rgba(0, 0, 0, 0.4);
+
+  /* Typography */
+  --font-sans: 'Inter Variable', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+
+  /* Motion */
+  --transition-fast: 120ms ease-out;
+}

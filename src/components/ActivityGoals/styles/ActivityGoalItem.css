@@ -1,50 +1,40 @@
 .activity-goal-item {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 4px;
-  border-bottom: 1px solid var(--border);
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4);
 }
 
 .activity-goal-info {
   display: flex;
+  flex: 1 1 260px;
   flex-direction: column;
+  gap: var(--space-1);
   min-width: 0;
 }
 
 .activity-goal-name {
-  color: var(--text-h);
-  font-weight: 500;
+  color: var(--color-text);
+  font-weight: 600;
   overflow-wrap: anywhere;
 }
 
 .activity-goal-detail {
-  color: var(--text);
-  font-size: 13px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.activity-goal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .activity-goal-actions {
   display: flex;
   flex-shrink: 0;
-  gap: 6px;
-}
-
-.activity-goal-actions button {
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--text-h);
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.activity-goal-actions button:hover {
-  border-color: var(--accent);
-}
-
-.activity-goal-actions .activity-goal-delete:hover {
-  border-color: #dc2626;
-  color: #dc2626;
+  gap: var(--space-2);
 }

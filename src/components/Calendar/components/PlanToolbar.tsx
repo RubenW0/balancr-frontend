@@ -4,42 +4,36 @@ import '../styles/Plan.css';
 interface PlanToolbarProps {
   plan: PlanResponseDTO | null;
   isPlanning: boolean;
-  error: string | null;
   disabled: boolean;
   onPlan: () => void;
   onClear: () => void;
 }
 
-/** "Plan my week" / "Clear plan" above the calendar, with the planning status. */
-export function PlanToolbar({ plan, isPlanning, error, disabled, onPlan, onClear }: PlanToolbarProps) {
+/** Planning controls on the right of the calendar's top bar: status, "Clear plan" and "Plan my week". */
+export function PlanToolbar({ plan, isPlanning, disabled, onPlan, onClear }: PlanToolbarProps) {
+  const note = plan
+    ? `${plan.scheduled.length} session(s) planned. This plan is a preview and is not saved: it disappears when you go to another week or change a fixed event.`
+    : null;
+
   return (
     <div className="plan-toolbar">
-      <div className="plan-toolbar-buttons">
-        <button type="button" onClick={onPlan} disabled={disabled || isPlanning}>
-          {isPlanning ? 'Planning...' : 'Plan my week'}
+      <div className="plan-toolbar-status" aria-live="polite">
+        {isPlanning && <span className="plan-toolbar-note">Planning your week...</span>}
+        {plan && plan.unscheduled.length === 0 && <span className="pill pill--success">Everything fits</span>}
+        {note && (
+          <span className="plan-toolbar-note" title={note}>
+            {note}
+          </span>
+        )}
+      </div>
+      {plan && (
+        <button type="button" className="button button--secondary" onClick={onClear}>
+          Clear plan
         </button>
-        {plan && (
-          <button type="button" className="plan-toolbar-clear" onClick={onClear}>
-            Clear plan
-          </button>
-        )}
-      </div>
-
-      <div aria-live="polite">
-        {isPlanning && <p className="plan-toolbar-note">Planning your week...</p>}
-        {plan && (
-          <p className="plan-toolbar-note">
-            {plan.scheduled.length} session(s) planned. This plan is a preview and is not saved: it disappears
-            when you go to another week or change a fixed event.
-          </p>
-        )}
-      </div>
-
-      {error && (
-        <p className="plan-error" role="alert">
-          Could not plan the week: {error}
-        </p>
       )}
+      <button type="button" className="button button--primary" onClick={onPlan} disabled={disabled || isPlanning}>
+        {isPlanning ? 'Planning...' : 'Plan my week'}
+      </button>
     </div>
   );
 }

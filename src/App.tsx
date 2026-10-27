@@ -1,4 +1,4 @@
-import { BrowserRouter, Link } from 'react-router-dom';
+import { BrowserRouter, NavLink } from 'react-router-dom';
 import { AppRoutes } from './routes/AppRoutes';
 import './App.css';
 
@@ -8,9 +8,9 @@ function App() {
       <header className="app-header">
         <span className="app-title">Balancr</span>
         <nav className="app-nav">
-          <Link to="/calendar">Calendar</Link>
-          <Link to="/fixed-events">Fixed Events</Link>
-          <Link to="/activity-goals">Activity Goals</Link>
+          <NavLink to="/calendar">Calendar</NavLink>
+          <NavLink to="/fixed-events">Fixed Events</NavLink>
+          <NavLink to="/activity-goals">Activity Goals</NavLink>
         </nav>
       </header>
       <main>

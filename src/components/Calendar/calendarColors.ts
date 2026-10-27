@@ -1,26 +1,35 @@
 import type { CalendarItem, CalendarItemKind } from '../../types/calendarItem';
 
-// Items get a colour per category (FIXED: event type, PLANNED: goal type); unknown ones fall back to the kind's colour.
-const CATEGORY_COLORS: Partial<Record<CalendarItemKind, Record<string, string>>> = {
+/**
+ * Colour keys for calendar items. The colours themselves are tokens in
+ * styles/tokens.css; WeekCalendar.css maps each key to its token through the
+ * class `week-calendar-color-<key>`, so no colour values live in TypeScript.
+ */
+export type CalendarColorKey = 'class' | 'exam' | 'sport' | 'work' | 'other' | 'training' | 'study';
+
+// Per kind: category (FIXED: event type, PLANNED: goal type) -> colour key.
+const CATEGORY_COLORS: Record<CalendarItemKind, Record<string, CalendarColorKey>> = {
   FIXED: {
-    class: '#2563eb',
-    work: '#d97706',
-    exam: '#dc2626',
-    other: '#64748b',
+    school: 'class',
+    class: 'class',
+    exam: 'exam',
+    sport: 'sport',
+    work: 'work',
+    other: 'other',
   },
-  // Two greens, so planned sessions stay recognisable as one kind.
   PLANNED: {
-    training: '#16a34a',
-    study: '#4d7c0f',
+    training: 'training',
+    study: 'study',
   },
 };
 
-const KIND_COLORS: Record<CalendarItemKind, string> = {
-  FIXED: '#0d9488',
-  PLANNED: '#16a34a',
+// Used for unknown categories.
+const KIND_COLORS: Record<CalendarItemKind, CalendarColorKey> = {
+  FIXED: 'other',
+  PLANNED: 'training',
 };
 
-export function getCalendarItemColor(item: CalendarItem): string {
-  const byCategory = item.category ? CATEGORY_COLORS[item.kind]?.[item.category] : undefined;
+export function getCalendarItemColorKey(item: CalendarItem): CalendarColorKey {
+  const byCategory = item.category ? CATEGORY_COLORS[item.kind][item.category] : undefined;
   return byCategory ?? KIND_COLORS[item.kind];
 }

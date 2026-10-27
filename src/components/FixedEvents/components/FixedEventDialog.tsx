@@ -106,7 +106,7 @@ export function FixedEventDialog({ initialValues, onDelete, onSave, onClose }: F
       <form className="fixed-event-dialog-form" onSubmit={handleSubmit}>
         <h2 id="fixed-event-dialog-title">{isEdit ? 'Edit fixed event' : 'New fixed event'}</h2>
 
-        <div className="fixed-event-dialog-field">
+        <div className="field">
           <label htmlFor="fixed-event-dialog-name">Title</label>
           <input
             id="fixed-event-dialog-name"
@@ -119,7 +119,7 @@ export function FixedEventDialog({ initialValues, onDelete, onSave, onClose }: F
           />
         </div>
 
-        <div className="fixed-event-dialog-field">
+        <div className="field">
           <label htmlFor="fixed-event-dialog-type">Type</label>
           <select
             id="fixed-event-dialog-type"
@@ -135,8 +135,8 @@ export function FixedEventDialog({ initialValues, onDelete, onSave, onClose }: F
           </select>
         </div>
 
-        <div className="fixed-event-dialog-row">
-          <div className="fixed-event-dialog-field">
+        <div className="field-row">
+          <div className="field">
             <label htmlFor="fixed-event-dialog-start">Start time</label>
             <input
               id="fixed-event-dialog-start"
@@ -147,7 +147,7 @@ export function FixedEventDialog({ initialValues, onDelete, onSave, onClose }: F
             />
           </div>
 
-          <div className="fixed-event-dialog-field">
+          <div className="field">
             <label htmlFor="fixed-event-dialog-end">End time</label>
             <input
               id="fixed-event-dialog-end"
@@ -170,7 +170,7 @@ export function FixedEventDialog({ initialValues, onDelete, onSave, onClose }: F
         </label>
 
         {error && (
-          <p className="fixed-event-dialog-error" role="alert">
+          <p className="alert alert--danger" role="alert">
             {error}
           </p>
         )}
@@ -179,17 +179,17 @@ export function FixedEventDialog({ initialValues, onDelete, onSave, onClose }: F
           {isEdit && (
             <button
               type="button"
-              className="fixed-event-dialog-delete"
+              className="button button--danger fixed-event-dialog-delete"
               onClick={handleDelete}
               disabled={isBusy}
             >
               Delete
             </button>
           )}
-          <button type="button" className="fixed-event-dialog-cancel" onClick={onClose} disabled={isBusy}>
+          <button type="button" className="button button--secondary" onClick={onClose} disabled={isBusy}>
             Cancel
           </button>
-          <button type="submit" disabled={isBusy}>
+          <button type="submit" className="button button--primary" disabled={isBusy}>
             {isBusy ? 'Saving...' : 'Save'}
           </button>
         </div>

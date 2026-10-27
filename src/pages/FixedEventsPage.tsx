@@ -7,18 +7,18 @@ export function FixedEventsPage() {
   const { fixedEvents, isLoading, error, addFixedEvent } = useFixedEvents();
 
   return (
-    <section className="fixed-events-page">
+    <section className="page fixed-events-page">
       <h1>Fixed Events</h1>
-      <p className="fixed-events-subtitle">
+      <p className="page-subtitle">
         {fixedEvents.length === 0 ? 'Overview of your fixed events' : `${fixedEvents.length} fixed event(s)`}
       </p>
 
       <FixedEventForm onSubmit={addFixedEvent} />
 
-      {error && <p className="fixed-events-error">{error}</p>}
+      {error && <p className="alert alert--danger fixed-events-error">{error}</p>}
 
       {isLoading ? (
-        <p className="fixed-events-loading">Loading fixed events...</p>
+        <p className="muted">Loading fixed events...</p>
       ) : (
         <FixedEventList fixedEvents={fixedEvents} />
       )}

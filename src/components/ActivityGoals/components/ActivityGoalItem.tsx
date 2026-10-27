@@ -20,7 +20,7 @@ function formatRest(restDaysBetween: number | null): string {
 
 export function ActivityGoalItem({ goal, onEdit, onDelete }: ActivityGoalItemProps) {
   return (
-    <li className="activity-goal-item">
+    <li className="card activity-goal-item">
       <div className="activity-goal-info">
         <span className="activity-goal-name">{goal.name}</span>
         <span className="activity-goal-detail">
@@ -28,18 +28,19 @@ export function ActivityGoalItem({ goal, onEdit, onDelete }: ActivityGoalItemPro
           {goal.intensity && <> ({INTENSITY_LABELS[goal.intensity].toLowerCase()})</>} &middot;{' '}
           {goal.frequencyPerWeek}x per week &middot; {goal.durationMinutes} min
         </span>
-        <span className="activity-goal-detail">
-          {formatRest(goal.restDaysBetween)} &middot; Priority: {PRIORITY_LABELS[goal.priority]}
+        <span className="activity-goal-meta">
+          <span className="pill">{formatRest(goal.restDaysBetween)}</span>
+          <span className="pill">Priority: {PRIORITY_LABELS[goal.priority]}</span>
           {goal.preferredTime !== 'ANY' && (
-            <> &middot; Preferred: {PREFERRED_TIME_LABELS[goal.preferredTime]}</>
+            <span className="pill">Preferred: {PREFERRED_TIME_LABELS[goal.preferredTime]}</span>
           )}
         </span>
       </div>
       <div className="activity-goal-actions">
-        <button type="button" onClick={() => onEdit(goal)}>
+        <button type="button" className="button button--secondary button--sm" onClick={() => onEdit(goal)}>
           Edit
         </button>
-        <button type="button" className="activity-goal-delete" onClick={() => onDelete(goal)}>
+        <button type="button" className="button button--danger button--sm" onClick={() => onDelete(goal)}>
           Delete
         </button>
       </div>
