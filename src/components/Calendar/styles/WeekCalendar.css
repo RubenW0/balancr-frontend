@@ -168,6 +168,16 @@
   line-height: 13px;
 }
 
+.week-calendar .fc-timegrid-event-short .fc-event-title-container {
+  min-width: 0;
+}
+
+.week-calendar .fc-timegrid-event-short .fc-event-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Colour per item: --item-color is picked by the class from calendarColors.ts. */
 
 .week-calendar-color-class {

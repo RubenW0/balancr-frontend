@@ -39,6 +39,7 @@ interface WeekCalendarProps {
 }
 
 const TIME_FORMAT: FormatterInput = { hour: '2-digit', minute: '2-digit', hour12: false };
+const SCROLL_TIME = '07:00:00';
 
 /** Day header: weekday in small capitals with the date number below it (circled for today). */
 function renderDayHeader(arg: DayHeaderContentArg) {
@@ -89,7 +90,11 @@ export function WeekCalendar({
   );
 
   const handleDatesSet = useCallback(
-    (arg: DatesSetArg) => onRangeChange(arg.start, arg.end, arg.view.title),
+    (arg: DatesSetArg) => {
+      onRangeChange(arg.start, arg.end, arg.view.title);
+      // FullCalendar applies scrollTime before the grid has its final height, so scroll again once it is laid out.
+      requestAnimationFrame(() => arg.view.calendar.scrollToTime(SCROLL_TIME));
+    },
     [onRangeChange],
   );
 
@@ -116,9 +121,9 @@ export function WeekCalendar({
         firstDay={1}
         headerToolbar={false}
         allDaySlot={false}
-        slotMinTime="06:00:00"
+        slotMinTime="00:00:00"
         slotMaxTime="24:00:00"
-        scrollTime="07:00:00"
+        scrollTime={SCROLL_TIME}
         slotLabelFormat={TIME_FORMAT}
         eventTimeFormat={TIME_FORMAT}
         // Blocks lower than this show time and title on one line, so short sessions stay readable in compact rows.
