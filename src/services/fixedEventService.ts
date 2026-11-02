@@ -1,8 +1,8 @@
 import { apiClient } from './apiClient';
 import type { CreateFixedEventPayload, FixedEvent, FixedEventRange } from '../types/fixedEvent';
 
-/** All fixed events, or only those overlapping `range` when it is given. */
-export async function getFixedEvents(range?: FixedEventRange): Promise<FixedEvent[]> {
+/** The fixed events overlapping `range`. */
+export async function getFixedEvents(range: FixedEventRange): Promise<FixedEvent[]> {
   const { data } = await apiClient.get<FixedEvent[]>('/fixed-events', { params: range });
   return data;
 }

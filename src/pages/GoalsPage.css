@@ -1,0 +1,7 @@
+.goals-page {
+  max-width: 1280px;
+}
+
+.goals-error {
+  margin-bottom: var(--space-4);
+}

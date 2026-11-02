@@ -25,6 +25,7 @@
   --color-accent-subtle: rgba(76, 154, 255, 0.06);
   --color-accent-tint: rgba(76, 154, 255, 0.04);
   --color-accent-selection: rgba(76, 154, 255, 0.16);
+  --color-focus-ring: rgba(76, 154, 255, 0.2);
 
   /* Status */
   --color-danger: #f87171;
@@ -49,7 +50,7 @@
   /* Calendar */
   --color-grid: #20242b;
   --color-non-business: rgba(0, 0, 0, 0.25);
-  --color-overlay: rgba(0, 0, 0, 0.6);
+  --color-overlay: rgba(0, 0, 0, 0.63);
 
   /* Shape */
   --radius-sm: 8px;
@@ -68,6 +69,7 @@
 
   /* Layout */
   --nav-height: 52px;
+  --control-height: 36px;
 
   /* Elevation: dialogs only */
   --shadow-dialog: 0 12px 32px rgba(0, 0, 0, 0.4);

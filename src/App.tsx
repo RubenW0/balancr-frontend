@@ -9,8 +9,8 @@ function App() {
         <span className="app-title">Balancr</span>
         <nav className="app-nav">
           <NavLink to="/calendar">Calendar</NavLink>
-          <NavLink to="/fixed-events">Fixed Events</NavLink>
-          <NavLink to="/activity-goals">Activity Goals</NavLink>
+          <NavLink to="/goals">Goals</NavLink>
+          <NavLink to="/availability">Availability</NavLink>
         </nav>
       </header>
       <main>

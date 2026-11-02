@@ -1,12 +1,17 @@
 .app-dialog {
-  width: min(480px, calc(100vw - 32px));
+  width: min(440px, calc(100vw - 32px));
   max-height: calc(100svh - 32px);
+  margin: auto;
   padding: 0;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-md);
-  background: var(--color-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
   color: var(--color-text);
   box-shadow: var(--shadow-dialog);
+}
+
+.app-dialog--wide {
+  width: min(520px, calc(100vw - 32px));
 }
 
 .app-dialog::backdrop {
@@ -21,14 +26,31 @@
   text-align: left;
 }
 
-.app-dialog-message {
-  color: var(--color-text);
+.app-dialog-title {
+  font-size: 16px;
 }
 
+.app-dialog-message {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* Forms inside a dialog use the same vertical rhythm as the dialog body. */
+.app-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Footer: quiet Cancel + primary action on the right; a destructive action may sit on the left. */
 .app-dialog-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--space-2);
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.app-dialog-actions-start {
+  margin-right: auto;
 }

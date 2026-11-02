@@ -39,12 +39,11 @@ h3 {
 }
 
 h1 {
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--space-1);
+  font-size: 20px;
 }
 
 h2 {
-  font-size: var(--font-size-lg);
+  font-size: 16px;
 }
 
 p {
@@ -56,18 +55,39 @@ p {
   outline-offset: 2px;
 }
 
-/* Page layout */
+/* Page layout: a centred container with a compact header row. */
 
 .page {
   width: 100%;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-4) 48px;
+  padding: 28px var(--space-5);
   text-align: left;
 }
 
-.page-subtitle {
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.page-summary {
   color: var(--color-text-muted);
-  margin-bottom: var(--space-5);
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.page-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.page-description {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
 }
 
 /* Buttons */
@@ -76,26 +96,21 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  min-height: 38px;
-  padding: var(--space-2) var(--space-4);
+  gap: 6px;
+  min-height: var(--control-height);
+  padding: 0 14px;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     background-color var(--transition-fast),
     border-color var(--transition-fast),
     color var(--transition-fast);
-}
-
-.button--sm {
-  min-height: 32px;
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--font-size-sm);
 }
 
 .button--primary {
@@ -126,6 +141,17 @@ p {
   border-color: var(--color-accent);
 }
 
+/* Ghost: no border, for the quiet action next to a primary one (e.g. Cancel). */
+.button--ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.button--ghost:hover:not(:disabled) {
+  background: var(--color-raised);
+  color: var(--color-text);
+}
+
 .button--danger {
   background: transparent;
   border-color: var(--color-danger);
@@ -141,37 +167,77 @@ p {
   cursor: not-allowed;
 }
 
+/* Square icon-only button. */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.icon-button:hover {
+  background: var(--color-raised);
+  color: var(--color-text);
+}
+
+.icon-button--danger:hover {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger);
+}
+
 /* Form controls */
 
 input[type='text'],
 input[type='number'],
-input[type='datetime-local'],
+input[type='date'],
+input[type='time'],
 select,
 textarea {
   width: 100%;
-  min-height: 40px;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border-strong);
+  height: var(--control-height);
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-raised);
   color: var(--color-text);
   font: inherit;
-  font-size: var(--font-size-md);
-  transition: border-color var(--transition-fast);
+  font-size: 14px;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+textarea {
+  height: auto;
+  padding: var(--space-2) 10px;
+}
+
+input::placeholder {
+  color: var(--color-text-muted);
 }
 
 input:hover:not(:disabled),
 select:hover:not(:disabled),
 textarea:hover:not(:disabled) {
-  border-color: var(--color-text-muted);
+  border-color: var(--color-border-strong);
 }
 
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 0;
+  outline: none;
   border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
 input[aria-invalid='true'],
@@ -196,61 +262,107 @@ textarea:disabled {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   min-width: 0;
 }
 
 .field label,
 .field-label {
-  font-size: var(--font-size-sm);
-  font-weight: 500;
   color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
 }
 
 .field-help {
-  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+  font-size: 11.5px;
+  line-height: 1.45;
 }
 
-.field-row {
-  display: flex;
-  flex-wrap: wrap;
+.field-error {
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+}
+
+/* Two fields side by side; one column on narrow screens. */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-3);
 }
 
-.field-row > .field {
-  flex: 1 1 180px;
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
-/* Alerts: thin coloured bar on the left, subtle tinted background */
+/* An input with a unit (e.g. "min") inside its right edge. */
+.input-with-unit {
+  position: relative;
+}
 
-.alert {
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-left-width: 3px;
+.input-with-unit input {
+  padding-right: 40px;
+}
+
+.input-unit {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+/* Banners: small inline messages (errors, success) with an optional action. */
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 7px var(--space-3);
+  border: 1px solid;
   border-radius: var(--radius-sm);
   color: var(--color-text);
-  font-size: 14px;
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
 }
 
-.alert--danger {
-  border-left-color: var(--color-danger);
+.banner-message {
+  flex: 1;
+  min-width: 0;
+}
+
+.banner .button {
+  min-height: 26px;
+  padding: 0 10px;
+  font-size: var(--font-size-xs);
+}
+
+.banner--danger {
+  border-color: color-mix(in srgb, var(--color-danger) 45%, transparent);
   background: var(--color-danger-subtle);
 }
 
-.alert--warning {
-  border-left-color: var(--color-warning);
-  background: var(--color-warning-subtle);
-}
-
-.alert--success {
-  border-left-color: var(--color-success);
+.banner--success {
+  border-color: color-mix(in srgb, var(--color-success) 45%, transparent);
   background: var(--color-success-subtle);
 }
 
-.alert--info {
-  border-left-color: var(--color-accent);
-  background: var(--color-accent-subtle);
+.banner--info {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
 }
 
 /* Cards and pills */
@@ -264,11 +376,11 @@ textarea:disabled {
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 2px var(--space-2);
+  padding: 1px var(--space-2);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   color: var(--color-text-muted);
-  font-size: 12px;
+  font-size: 11.5px;
   line-height: 1.5;
   white-space: nowrap;
 }

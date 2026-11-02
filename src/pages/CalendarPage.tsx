@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { ErrorBanner } from '../components/Banner/ErrorBanner';
 import { CalendarLegend } from '../components/Calendar/components/CalendarLegend';
 import { PlanToolbar } from '../components/Calendar/components/PlanToolbar';
 import { UnscheduledList } from '../components/Calendar/components/UnscheduledList';
@@ -17,7 +18,7 @@ import {
 } from '../mappers/calendarMappers';
 import type { CalendarItem } from '../types/calendarItem';
 import type { CreateFixedEventPayload, FixedEvent } from '../types/fixedEvent';
-import { toDateTimeInputValue, toLocalDateString, toLocalDateTimeString } from '../utils/dateTime';
+import { toDateInputValue, toLocalDateString, toLocalDateTimeString, toTimeInputValue } from '../utils/dateTime';
 import './CalendarPage.css';
 
 const CALENDAR_HELP =
@@ -35,6 +36,7 @@ export function CalendarPage() {
     error,
     hasRange,
     setRange,
+    reload,
     addFixedEvent,
     updateFixedEvent,
     deleteFixedEvent,
@@ -105,18 +107,23 @@ export function CalendarPage() {
     [deleteFixedEvent, clearPlan],
   );
 
-  const handleSelectSlot = useCallback((start: Date, end: Date) => {
-    setDialog({
-      mode: 'create',
-      values: {
-        title: '',
-        type: 'class',
-        startTime: toDateTimeInputValue(start),
-        endTime: toDateTimeInputValue(end),
-        isMovable: false,
-      },
-    });
+  const openCreateDialog = useCallback((date: string, startTime: string, endTime: string) => {
+    setDialog({ mode: 'create', values: { title: '', type: 'class', date, startTime, endTime, isMovable: false } });
   }, []);
+
+  const handleSelectSlot = useCallback(
+    (start: Date, end: Date) => {
+      // A selection that ends at midnight ends at "00:00" of the next day; in the dialog that is 23:59 on the same day.
+      const endsAtMidnight = toDateInputValue(end) !== toDateInputValue(start);
+      openCreateDialog(toDateInputValue(start), toTimeInputValue(start), endsAtMidnight ? '23:59' : toTimeInputValue(end));
+    },
+    [openCreateDialog],
+  );
+
+  // "+ Event": the first day of the visible week, 09:00-10:00.
+  const handleAddEvent = useCallback(() => {
+    if (weekStart) openCreateDialog(weekStart, '09:00', '10:00');
+  }, [weekStart, openCreateDialog]);
 
   const handleItemClick = useCallback(
     (item: CalendarItem) => {
@@ -129,6 +136,13 @@ export function CalendarPage() {
   );
 
   const closeDialog = useCallback(() => setDialog(null), []);
+
+  // A server that is down fails both loads with the same message, so show each message once.
+  const loadErrors = [...new Set([error, availability.error].filter((message) => message !== null))];
+  const retryLoad = () => {
+    reload();
+    availability.reload();
+  };
 
   const isEmpty = hasRange && !isLoading && !error && fixedItems.length === 0;
 
@@ -163,29 +177,22 @@ export function CalendarPage() {
             disabled={weekStart === null}
             onPlan={handlePlan}
             onClear={clearPlan}
-          />
+          >
+            <button type="button" className="button button--secondary" onClick={handleAddEvent} disabled={!weekStart}>
+              + Event
+            </button>
+          </PlanToolbar>
         </div>
       </div>
 
       {visiblePlan && visiblePlan.unscheduled.length > 0 && <UnscheduledList sessions={visiblePlan.unscheduled} />}
 
-      {(error || availability.error || planError) && (
+      {(loadErrors.length > 0 || planError) && (
         <div className="calendar-errors">
-          {error && (
-            <p className="alert alert--danger" role="alert">
-              Could not load fixed events: {error}
-            </p>
-          )}
-          {availability.error && (
-            <p className="alert alert--danger" role="alert">
-              Could not load availability: {availability.error}
-            </p>
-          )}
-          {planError && (
-            <p className="alert alert--danger" role="alert">
-              Could not plan the week: {planError}
-            </p>
-          )}
+          {loadErrors.map((message) => (
+            <ErrorBanner key={message} message={message} onRetry={retryLoad} />
+          ))}
+          {planError && <ErrorBanner message={planError} onRetry={handlePlan} />}
         </div>
       )}
 
@@ -210,8 +217,9 @@ export function CalendarPage() {
           initialValues={{
             title: dialog.event.title,
             type: dialog.event.type,
-            startTime: toDateTimeInputValue(dialog.event.startTime),
-            endTime: toDateTimeInputValue(dialog.event.endTime),
+            date: toDateInputValue(dialog.event.startTime),
+            startTime: toTimeInputValue(dialog.event.startTime),
+            endTime: toTimeInputValue(dialog.event.endTime),
             isMovable: dialog.event.isMovable,
           }}
           onSave={(payload) => handleUpdate(dialog.event.id, payload)}

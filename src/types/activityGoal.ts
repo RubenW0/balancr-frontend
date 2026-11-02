@@ -2,10 +2,7 @@ export type ActivityGoalType = 'TRAINING' | 'STUDY';
 
 export type ActivityGoalIntensity = 'LIGHT' | 'MEDIUM' | 'HEAVY';
 
-/** 1 = low, 2 = normal (the default), 3 = high. */
-export type ActivityGoalPriority = 1 | 2 | 3;
-
-/** Part of the day the planner should prefer; ANY (the default) means no preference. */
+/** Part of the day the planner should prefer; ANY (the default, also sent as null) means no preference. */
 export type ActivityGoalPreferredTime = 'ANY' | 'MORNING' | 'AFTERNOON' | 'EVENING';
 
 export const ACTIVITY_GOAL_NAME_MAX_LENGTH = 50;
@@ -20,8 +17,11 @@ export interface ActivityGoalResponseDTO {
   intensity: ActivityGoalIntensity | null;
   /** null means: use the default for the intensity. */
   restDaysBetween: number | null;
-  priority: ActivityGoalPriority;
-  preferredTime: ActivityGoalPreferredTime;
+  /** 1-3, higher is planned first; see components/ActivityGoals/priorityOptions.ts. */
+  priority: number;
+  preferredTime: ActivityGoalPreferredTime | null;
+  /** Not returned by the backend yet; see ActivityGoalRequestDTO.groupName. */
+  groupName?: string | null;
   userId: number;
   createdAt: string;
   updatedAt: string;
@@ -36,6 +36,12 @@ export interface ActivityGoalRequestDTO {
   durationMinutes: number;
   intensity: ActivityGoalIntensity | null;
   restDaysBetween: number | null;
-  priority: ActivityGoalPriority;
-  preferredTime: ActivityGoalPreferredTime;
+  priority: number;
+  /** null = no preference (the backend stores ANY). */
+  preferredTime: ActivityGoalPreferredTime | null;
+  /**
+   * Goals with the same group name are never planned on the same day. Only sent when set.
+   * The backend does not know this field yet and ignores it.
+   */
+  groupName?: string;
 }

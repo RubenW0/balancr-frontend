@@ -15,3 +15,13 @@ export interface AvailabilityWindow {
   endTime: string;
   userId: number;
 }
+
+/**
+ * Body item for PUT /availability. Times are LocalTime strings ("08:00:00").
+ * Weekdays left out of the request keep their stored window; there is no way to mark a day as closed.
+ */
+export interface AvailabilityWindowRequestDTO {
+  dayOfWeek: DayOfWeek;
+  startTime: string;
+  endTime: string;
+}
