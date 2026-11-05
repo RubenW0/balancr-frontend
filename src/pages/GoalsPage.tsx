@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ErrorBanner } from '../components/Banner/ErrorBanner';
 import { GoalCard } from '../components/ActivityGoals/components/GoalCard';
 import { GoalDialog } from '../components/ActivityGoals/components/GoalDialog';
@@ -20,6 +20,13 @@ export function GoalsPage() {
   const openEdit = (goal: ActivityGoalResponseDTO) => setDialog({ mode: 'edit', goal });
   const closeDialog = () => setDialog(null);
   const hasGoals = activityGoals.length > 0;
+
+  const namesById = useMemo(() => new Map(activityGoals.map((goal) => [goal.id, goal.name])), [activityGoals]);
+  const separateFromNames = (goal: ActivityGoalResponseDTO) =>
+    goal.separateFromGoalIds
+      .map((goalId) => namesById.get(goalId))
+      .filter((name) => name !== undefined)
+      .sort((a, b) => a.localeCompare(b));
 
   return (
     <section className="page goals-page">
@@ -44,7 +51,13 @@ export function GoalsPage() {
       ) : hasGoals ? (
         <ul className="goal-grid">
           {activityGoals.map((goal) => (
-            <GoalCard key={goal.id} goal={goal} onEdit={openEdit} onDelete={setDeletingGoal} />
+            <GoalCard
+              key={goal.id}
+              goal={goal}
+              separateFromNames={separateFromNames(goal)}
+              onEdit={openEdit}
+              onDelete={setDeletingGoal}
+            />
           ))}
         </ul>
       ) : (
@@ -58,11 +71,12 @@ export function GoalsPage() {
         )
       )}
 
-      {dialog?.mode === 'create' && <GoalDialog onSubmit={addActivityGoal} onClose={closeDialog} />}
+      {dialog?.mode === 'create' && <GoalDialog goals={activityGoals} onSubmit={addActivityGoal} onClose={closeDialog} />}
       {dialog?.mode === 'edit' && (
         <GoalDialog
           key={dialog.goal.id}
           goal={dialog.goal}
+          goals={activityGoals}
           onSubmit={(payload) => updateActivityGoal(dialog.goal.id, payload)}
           onClose={closeDialog}
         />

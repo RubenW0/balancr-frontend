@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import { ApiError } from '../../../services/apiClient';
 import { ACTIVITY_GOAL_NAME_MAX_LENGTH } from '../../../types/activityGoal';
@@ -14,6 +14,7 @@ import { Dialog } from '../../Dialog/components/Dialog';
 import { useDiscardGuard } from '../../Dialog/useDiscardGuard';
 import { INTENSITY_LABELS, PREFERRED_TIME_LABELS, TYPE_LABELS } from '../activityGoalLabels';
 import { restPlaceholder } from '../goalText';
+import { GoalMultiSelect } from './GoalMultiSelect';
 import { DEFAULT_PRIORITY_LEVEL, PRIORITY_OPTIONS, levelToPriority, priorityToLevel } from '../priorityOptions';
 import type { PriorityLevel } from '../priorityOptions';
 import '../styles/GoalDialog.css';
@@ -21,6 +22,8 @@ import '../styles/GoalDialog.css';
 interface GoalDialogProps {
   /** When given, the dialog edits this goal; otherwise it creates a new one. */
   goal?: ActivityGoalResponseDTO;
+  /** All of the user's goals, for "Not on the same day as" (the edited goal itself is left out). */
+  goals: ActivityGoalResponseDTO[];
   /** Saves the goal; the dialog closes when it resolves and shows the error when it rejects. */
   onSubmit: (payload: ActivityGoalRequestDTO) => Promise<void>;
   onClose: () => void;
@@ -36,7 +39,8 @@ interface GoalFormValues {
   restDaysBetween: string;
   preferredTime: ActivityGoalPreferredTime;
   priority: PriorityLevel;
-  groupName: string;
+  /** Sorted, so the dirty check does not depend on the order of picking. */
+  separateFromGoalIds: number[];
 }
 
 type FieldErrors = Partial<Record<keyof GoalFormValues, string>>;
@@ -55,13 +59,17 @@ function toFormValues(goal?: ActivityGoalResponseDTO): GoalFormValues {
     restDaysBetween: goal?.restDaysBetween != null ? String(goal.restDaysBetween) : '',
     preferredTime: goal?.preferredTime ?? 'ANY',
     priority: goal ? priorityToLevel(goal.priority) : DEFAULT_PRIORITY_LEVEL,
-    groupName: goal?.groupName ?? '',
+    separateFromGoalIds: [...(goal?.separateFromGoalIds ?? [])].sort((a, b) => a - b),
   };
 }
 
 /** "More options" starts open when the goal already uses one of them. */
 function hasMoreOptions(values: GoalFormValues): boolean {
-  return values.preferredTime !== 'ANY' || values.priority !== DEFAULT_PRIORITY_LEVEL || values.groupName.trim() !== '';
+  return (
+    values.preferredTime !== 'ANY' ||
+    values.priority !== DEFAULT_PRIORITY_LEVEL ||
+    values.separateFromGoalIds.length > 0
+  );
 }
 
 function isWholeNumber(value: string): boolean {
@@ -95,8 +103,7 @@ function validate(values: GoalFormValues): FieldErrors {
 
 function toPayload(values: GoalFormValues, goal?: ActivityGoalResponseDTO): ActivityGoalRequestDTO {
   const isTraining = values.type === 'TRAINING';
-  const groupName = values.groupName.trim();
-  // PUT replaces the whole goal, so every field is always sent (groupName only when set).
+  // PUT replaces the whole goal, so every field is always sent.
   return {
     name: values.name.trim(),
     type: values.type,
@@ -107,7 +114,7 @@ function toPayload(values: GoalFormValues, goal?: ActivityGoalResponseDTO): Acti
     restDaysBetween: values.restDaysBetween.trim() === '' ? null : Number(values.restDaysBetween),
     priority: levelToPriority(values.priority, goal?.priority),
     preferredTime: values.preferredTime === 'ANY' ? null : values.preferredTime,
-    ...(groupName ? { groupName } : {}),
+    separateFromGoalIds: values.separateFromGoalIds,
   };
 }
 
@@ -119,7 +126,7 @@ function Chevron() {
   );
 }
 
-export function GoalDialog({ goal, onSubmit, onClose }: GoalDialogProps) {
+export function GoalDialog({ goal, goals, onSubmit, onClose }: GoalDialogProps) {
   const id = useId();
   const [initialValues] = useState(() => toFormValues(goal));
   const [values, setValues] = useState(initialValues);
@@ -131,6 +138,10 @@ export function GoalDialog({ goal, onSubmit, onClose }: GoalDialogProps) {
   const isDirty = JSON.stringify(values) !== JSON.stringify(initialValues);
   const { requestClose, confirmDialog } = useDiscardGuard(isDirty, onClose);
   const isTraining = values.type === 'TRAINING';
+  const otherGoals = useMemo(
+    () => goals.filter((other) => other.id !== goal?.id).sort((a, b) => a.name.localeCompare(b.name)),
+    [goals, goal?.id],
+  );
 
   const setField = <K extends keyof GoalFormValues>(key: K, value: GoalFormValues[K]) => {
     setValues((prev) => ({ ...prev, [key]: value }));
@@ -304,7 +315,7 @@ export function GoalDialog({ goal, onSubmit, onClose }: GoalDialogProps) {
             >
               <Chevron />
               <span className="goal-dialog-more-label">More options</span>
-              {!showMore && <span className="goal-dialog-more-hint">preferred time, priority, keep apart</span>}
+              {!showMore && <span className="goal-dialog-more-hint">preferred time, priority, not on same day as</span>}
             </button>
 
             {showMore && (
@@ -344,18 +355,17 @@ export function GoalDialog({ goal, onSubmit, onClose }: GoalDialogProps) {
                 </div>
 
                 <div className="field">
-                  <label htmlFor={`${id}-group`}>Keep on separate days from</label>
-                  <input
-                    id={`${id}-group`}
-                    type="text"
-                    value={values.groupName}
-                    onChange={(e) => setField('groupName', e.target.value)}
-                    aria-describedby={`${id}-group-help`}
+                  <label htmlFor={`${id}-separate`}>Not on the same day as</label>
+                  <GoalMultiSelect
+                    id={`${id}-separate`}
+                    options={otherGoals}
+                    value={values.separateFromGoalIds}
+                    onChange={(ids) => setField('separateFromGoalIds', ids)}
                     disabled={isBusy}
+                    aria-describedby={`${id}-separate-help`}
                   />
-                  <p id={`${id}-group-help`} className="field-help">
-                    Goals with the same name here are never planned on the same day. Example: use 'Gym' on both Gym
-                    Push and Gym Pull.
+                  <p id={`${id}-separate-help`} className="field-help">
+                    The planner never puts these on the same day.
                   </p>
                 </div>
               </div>

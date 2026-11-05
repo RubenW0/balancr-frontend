@@ -3,7 +3,7 @@ import type { Ref } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import nlLocale from '@fullcalendar/core/locales/nl';
+import enGbLocale from '@fullcalendar/core/locales/en-gb';
 import type {
   BusinessHoursInput,
   DateSelectArg,
@@ -41,7 +41,7 @@ interface WeekCalendarProps {
 const TIME_FORMAT: FormatterInput = { hour: '2-digit', minute: '2-digit', hour12: false };
 const SCROLL_TIME = '07:00:00';
 
-/** Day header: weekday in small capitals with the date number below it (circled for today). */
+/** Day header: short weekday ("Mon") with the date number below it (circled for today). */
 function renderDayHeader(arg: DayHeaderContentArg) {
   return (
     <span className="week-calendar-day">
@@ -117,7 +117,8 @@ export function WeekCalendar({
         ref={calendarRef}
         plugins={[timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
-        locale={nlLocale}
+        // English labels ("Mon", "Today"), but weeks start on Monday and times stay 24h (TIME_FORMAT).
+        locale={enGbLocale}
         firstDay={1}
         headerToolbar={false}
         allDaySlot={false}

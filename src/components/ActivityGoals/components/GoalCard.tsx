@@ -1,15 +1,20 @@
 import type { MouseEvent } from 'react';
 import type { ActivityGoalResponseDTO } from '../../../types/activityGoal';
 import { TYPE_LABELS } from '../activityGoalLabels';
-import { goalDetailsText, goalScheduleText } from '../goalText';
+import { goalDetailsText, goalScheduleText, separationText } from '../goalText';
 import { priorityLabel, priorityToLevel } from '../priorityOptions';
 import '../styles/GoalCard.css';
 
 interface GoalCardProps {
   goal: ActivityGoalResponseDTO;
+  /** Names of the goals in goal.separateFromGoalIds, sorted by name. */
+  separateFromNames: string[];
   onEdit: (goal: ActivityGoalResponseDTO) => void;
   onDelete: (goal: ActivityGoalResponseDTO) => void;
 }
+
+// Characters that fit on the details line of the narrowest card; a longer separation list is shortened to "+N".
+const DETAILS_MAX_LENGTH = 44;
 
 function PencilIcon() {
   return (
@@ -40,9 +45,14 @@ function TrashIcon() {
   );
 }
 
-export function GoalCard({ goal, onEdit, onDelete }: GoalCardProps) {
+export function GoalCard({ goal, separateFromNames, onEdit, onDelete }: GoalCardProps) {
   const level = priorityToLevel(goal.priority);
-  const details = goalDetailsText(goal);
+  const goalDetails = goalDetailsText(goal);
+  const separation = separationText(separateFromNames, DETAILS_MAX_LENGTH - (goalDetails ? goalDetails.length + 3 : 0));
+  // A shortened separation list ("+2") is spelled out in the tooltip.
+  const fullDetails = [goalDetails, separateFromNames.length > 0 && `not with ${separateFromNames.join(', ')}`]
+    .filter(Boolean)
+    .join(' · ');
 
   // The icon buttons sit inside the clickable card, so keep their clicks from also opening the editor.
   const handleAction = (e: MouseEvent, action: (goal: ActivityGoalResponseDTO) => void) => {
@@ -61,7 +71,14 @@ export function GoalCard({ goal, onEdit, onDelete }: GoalCardProps) {
       </div>
 
       <p className="goal-card-schedule">{goalScheduleText(goal)}</p>
-      {details && <p className="goal-card-details">{details}</p>}
+      {(goalDetails || separation) && (
+        <p className="goal-card-details" title={fullDetails}>
+          {goalDetails}
+          {goalDetails && separation && ' · '}
+          {/* Wraps as a whole, so "+2" never ends up alone on a line. */}
+          {separation && <span className="goal-card-separation">{separation}</span>}
+        </p>
+      )}
 
       <div className="goal-card-actions">
         <button

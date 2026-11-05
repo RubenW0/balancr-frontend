@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { PlanResponseDTO } from '../../../types/plan';
+import { planSummary } from '../planSummary';
 import '../styles/Plan.css';
 
 interface PlanToolbarProps {
@@ -14,18 +15,16 @@ interface PlanToolbarProps {
 
 /** Planning controls on the right of the calendar's top bar: status, extra actions, "Clear plan" and "Plan my week". */
 export function PlanToolbar({ plan, isPlanning, disabled, onPlan, onClear, children }: PlanToolbarProps) {
-  const note = plan
-    ? `${plan.scheduled.length} session(s) planned. This plan is a preview and is not saved: it disappears when you go to another week or change a fixed event.`
-    : null;
+  const summary = plan ? planSummary(plan) : null;
 
   return (
     <div className="plan-toolbar">
       <div className="plan-toolbar-status" aria-live="polite">
         {isPlanning && <span className="plan-toolbar-note">Planning your week...</span>}
         {plan && plan.unscheduled.length === 0 && <span className="pill pill--success">Everything fits</span>}
-        {note && (
-          <span className="plan-toolbar-note" title={note}>
-            {note}
+        {summary && (
+          <span className="pill plan-toolbar-chip" title={summary.explanation}>
+            {summary.label}
           </span>
         )}
       </div>

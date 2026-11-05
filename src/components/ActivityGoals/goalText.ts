@@ -49,6 +49,17 @@ export function goalDetailsText(goal: ActivityGoalResponseDTO): string | null {
   return parts.length > 0 ? parts.join(' · ') : null;
 }
 
+/**
+ * "not with Gym Push, Running", or "not with Gym Push +2" when that is longer than
+ * maxLength characters; null when the goal has no separations. Names are shown in the given order.
+ */
+export function separationText(names: string[], maxLength: number): string | null {
+  if (names.length === 0) return null;
+  const full = `not with ${names.join(', ')}`;
+  if (names.length === 1 || full.length <= maxLength) return full;
+  return `not with ${names[0]} +${names.length - 1}`;
+}
+
 /** "6 goals · 14h per week" (total = sum of frequency x duration). */
 export function goalsSummaryText(goals: ActivityGoalResponseDTO[]): string {
   const minutes = goals.reduce((sum, goal) => sum + goal.frequencyPerWeek * goal.durationMinutes, 0);

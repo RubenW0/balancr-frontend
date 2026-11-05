@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ActivityGoalResponseDTO } from '../../types/activityGoal';
-import { goalDetailsText, goalsSummaryText, restPlaceholder } from './goalText';
+import { goalDetailsText, goalsSummaryText, restPlaceholder, separationText } from './goalText';
 
 function goal(overrides: Partial<ActivityGoalResponseDTO>): ActivityGoalResponseDTO {
   return {
@@ -13,6 +13,7 @@ function goal(overrides: Partial<ActivityGoalResponseDTO>): ActivityGoalResponse
     restDaysBetween: null,
     priority: 2,
     preferredTime: 'ANY',
+    separateFromGoalIds: [],
     userId: 1,
     createdAt: '',
     updatedAt: '',
@@ -46,6 +47,19 @@ describe('goalDetailsText', () => {
   it('shows rest for Study only when it was set', () => {
     expect(goalDetailsText(goal({ type: 'STUDY', intensity: null }))).toBeNull();
     expect(goalDetailsText(goal({ type: 'STUDY', intensity: null, restDaysBetween: 1 }))).toBe('rest 1 day');
+  });
+});
+
+describe('separationText', () => {
+  it('lists the names, or nothing when there are none', () => {
+    expect(separationText([], 40)).toBeNull();
+    expect(separationText(['Gym Push', 'Running'], 40)).toBe('not with Gym Push, Running');
+  });
+
+  it('shortens a list longer than the room to the first name and a count', () => {
+    expect(separationText(['Gym Push', 'Running', 'Statistics'], 30)).toBe('not with Gym Push +2');
+    // A single name is never replaced by "+0".
+    expect(separationText(['A very long goal name here'], 10)).toBe('not with A very long goal name here');
   });
 });
 

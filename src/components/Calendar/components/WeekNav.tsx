@@ -23,20 +23,20 @@ function Chevron({ direction }: { direction: 'left' | 'right' }) {
   );
 }
 
-/** Previous/next week, "Vandaag" and the visible week, shown above the calendar. */
+/** Previous/next week, "Today" and the visible week, shown above the calendar. */
 export function WeekNav({ title, isCurrentWeek, onPrev, onNext, onToday }: WeekNavProps) {
   return (
     <div className="week-nav">
       <div className="week-nav-buttons">
-        <button type="button" className="button button--secondary week-nav-arrow" onClick={onPrev} aria-label="Vorige">
+        <button type="button" className="button button--secondary week-nav-arrow" onClick={onPrev} aria-label="Previous week">
           <Chevron direction="left" />
         </button>
-        <button type="button" className="button button--secondary week-nav-arrow" onClick={onNext} aria-label="Volgende">
+        <button type="button" className="button button--secondary week-nav-arrow" onClick={onNext} aria-label="Next week">
           <Chevron direction="right" />
         </button>
       </div>
       <button type="button" className="button button--secondary week-nav-today" onClick={onToday} disabled={isCurrentWeek}>
-        Vandaag
+        Today
       </button>
       <h2 className="week-nav-title" aria-live="polite">
         {title}

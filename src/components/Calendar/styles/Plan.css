@@ -26,17 +26,16 @@
   display: none;
 }
 
-/* Small muted note; the full text is in the title when it is clamped. */
+/* Small muted note, e.g. "Planning your week..." */
 .plan-toolbar-note {
-  display: -webkit-box;
-  max-width: 340px;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
-  line-height: 1.35;
+  white-space: nowrap;
+}
+
+/* The full explanation is in its title. */
+.plan-toolbar-chip {
+  cursor: help;
 }
 
 /* "Could not be scheduled" bar */

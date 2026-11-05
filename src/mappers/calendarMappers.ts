@@ -38,9 +38,9 @@ const FULLCALENDAR_DAY: Record<DayOfWeek, number> = {
   SATURDAY: 6,
 };
 
-/** Each availability window becomes the business hours of its weekday; the rest is greyed out. */
+/** Each open availability window becomes the business hours of its weekday; the rest (and closed days) is greyed out. */
 export function availabilityToBusinessHours(windows: AvailabilityWindow[]): BusinessHoursInput {
-  return windows.map((window) => ({
+  return windows.filter((window) => !window.closed).map((window) => ({
     daysOfWeek: [FULLCALENDAR_DAY[window.dayOfWeek]],
     startTime: window.startTime,
     // An end of 00:00 means "until midnight".

@@ -2,6 +2,27 @@
   max-width: 860px;
 }
 
+/* "< Back" above the title */
+.availability-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 0 var(--space-2) -6px;
+  padding: 2px 6px 2px 2px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.availability-back-link:hover {
+  color: var(--color-text);
+}
+
 .availability-messages:not(:empty) {
   margin-bottom: var(--space-3);
 }
@@ -68,10 +89,70 @@
   margin-top: calc(-1 * var(--space-1));
 }
 
-.availability-note {
-  margin-top: var(--space-2);
+/* A closed day: dimmed, with a note in place of the timeline. */
+.availability-row--closed .availability-day,
+.availability-row--closed .availability-times {
+  opacity: 0.45;
+}
+
+.availability-closed-note {
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
+}
+
+.availability-warning {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Simple mode: one line for the whole week. */
+.availability-simple {
+  padding: var(--space-4);
+}
+
+.availability-simple-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  font-size: 14px;
+}
+
+.availability-simple-line input {
+  width: 108px;
+  font-variant-numeric: tabular-nums;
+}
+
+.availability-simple .field-error {
+  margin-top: var(--space-2);
+}
+
+.availability-customise {
+  margin-left: auto;
+}
+
+.availability-back {
+  margin-top: var(--space-2);
+}
+
+/* Small link-like button */
+.text-button {
+  padding: 2px var(--space-1);
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--color-accent);
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.text-button:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* On/off switch */
@@ -130,7 +211,8 @@
     width: auto;
   }
 
-  .availability-timeline {
+  .availability-timeline,
+  .availability-closed-note {
     grid-column: 1 / -1;
     grid-row: 3;
   }

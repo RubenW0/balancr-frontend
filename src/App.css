@@ -57,6 +57,33 @@
   outline-offset: -2px;
 }
 
+/* Gear at the right end of the bar, linking to Availability. */
+.app-settings-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  margin-left: auto;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.app-settings-link:hover {
+  background: var(--color-raised);
+  color: var(--color-text);
+}
+
+.app-settings-link.active {
+  background: var(--color-raised);
+  color: var(--color-accent);
+}
+
 @media (max-width: 600px) {
   .app-header {
     gap: var(--space-4);

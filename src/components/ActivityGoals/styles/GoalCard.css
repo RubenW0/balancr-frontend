@@ -89,6 +89,10 @@
   font-size: 12.5px;
 }
 
+.goal-card-separation {
+  white-space: nowrap;
+}
+
 /* Edit/Delete: shown on hover or keyboard focus; always on touch screens. */
 .goal-card-actions {
   position: absolute;

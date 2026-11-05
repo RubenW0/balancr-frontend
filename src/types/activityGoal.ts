@@ -20,8 +20,11 @@ export interface ActivityGoalResponseDTO {
   /** 1-3, higher is planned first; see components/ActivityGoals/priorityOptions.ts. */
   priority: number;
   preferredTime: ActivityGoalPreferredTime | null;
-  /** Not returned by the backend yet; see ActivityGoalRequestDTO.groupName. */
-  groupName?: string | null;
+  /**
+   * Goals this one is never planned on the same day as, sorted, [] when none.
+   * The relation is symmetric: if A lists B, B also lists A.
+   */
+  separateFromGoalIds: number[];
   userId: number;
   createdAt: string;
   updatedAt: string;
@@ -39,9 +42,6 @@ export interface ActivityGoalRequestDTO {
   priority: number;
   /** null = no preference (the backend stores ANY). */
   preferredTime: ActivityGoalPreferredTime | null;
-  /**
-   * Goals with the same group name are never planned on the same day. Only sent when set.
-   * The backend does not know this field yet and ignores it.
-   */
-  groupName?: string;
+  /** Ids of the user's other goals; replaces the whole set (also the side saved on the other goal). */
+  separateFromGoalIds: number[];
 }
